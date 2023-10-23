@@ -55,8 +55,13 @@ def recommend_grids(df, df_2, user_inputs):
     available_percentages = [row.index[row].tolist() for _, row in user_rows.iterrows()]
     all_combinations = list(itertools.product(*available_percentages))
 
-    valid_combinations = [combo for combo in all_combinations if
-                          sum(int(percent.split('%')[0]) for percent in combo) == 100]
+    valid_combinations = [combo for combo in all_combinations if sum(int(percent.split('%')[0]) for percent in combo) == 100]
+
+    # Filter out symmetric combinations
+    def is_symmetric(combination):
+        return (combination[0], combination[1]) not in [('50% V', '50% H'), ('50% H', '50% V')]
+
+    valid_combinations = list(filter(is_symmetric, valid_combinations))
 
     if len(valid_combinations) > 0:
         return valid_combinations
@@ -67,9 +72,7 @@ def recommend_grids(df, df_2, user_inputs):
             subset_weights = df_2[df_2['subset'].isin(user_subsets)]['Combined Weight']
             highest_weight_element = subset_weights.idxmax()
             a = df_2['subset'][highest_weight_element]
-            # result = print(f'For {a}, the recommended grid is 100%')
             result = st.subheader(f"""For {a}, the recommended grid is 100% """)
-
             other = [t for t in user_inputs if t[1] != a]
             result = recommend_grids(df, df_2, other)
             return result
