@@ -67,7 +67,9 @@ def recommend_grids(df, df_2, user_inputs):
             subset_weights = df_2[df_2['subset'].isin(user_subsets)]['Combined Weight']
             highest_weight_element = subset_weights.idxmax()
             a = df_2['subset'][highest_weight_element]
-            result = print(f'For {a}, the recommended grid is 100%')
+            # result = print(f'For {a}, the recommended grid is 100%')
+            result = st.subheader(f"""For {a}, the recommended grid is 100% """)
+
             other = [t for t in user_inputs if t[1] != a]
             result = recommend_grids(df, df_2, other)
             return result
@@ -80,7 +82,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-# Define your data and functions as you have shown in the question
+
 
 # Define user_inputs here
 user_inputs = []
@@ -117,23 +119,26 @@ def main():
     for user_input in user_inputs:
         st.sidebar.write(f"Element: {user_input[0]}, Subset: {user_input[1]}")
 
-    # Recommendations section
     if st.sidebar.button("Get Recommendations"):
         recommendations = recommend_grids(df, df_2, user_inputs)
 
-        # Display recommendations
+    # Display recommendations
         st.header("Recommended Grids")
         if len(recommendations) == 0:
             st.error("No valid recommendations found.")
+
         else:
             st.success("Recommended Grids:")
             for i, recommendation in enumerate(recommendations, start=1):
-                st.subheader(f"Recommendation {i}")
-                display_grid(recommendation)
-
+                 st.subheader(f"Recommendation {i}")            
+            
+            # Display the recommendation
+                 display_grid(recommendation)
+            
 # Function to display the recommended grid
 def display_grid(recommendation):
     fig, ax = plt.subplots(figsize=(6, 4))
+
     percentages = [int(percent.split('%')[0]) for percent in recommendation]
     labels = [f"{percent}" for percent in recommendation]
 
@@ -145,6 +150,8 @@ def display_grid(recommendation):
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
