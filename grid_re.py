@@ -68,7 +68,7 @@ def recommend_grids(df, df_2, user_inputs):
     else:
         if len(user_subsets) == 1:
             # [(user_subsets[0], '100%')]
-            return [('100%')]
+            return [('0%','100%')]
         else:
             subset_weights = df_2[df_2['subset'].isin(user_subsets)]['Combined Weight']
             highest_weight_element = subset_weights.idxmax()
