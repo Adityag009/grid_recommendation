@@ -55,7 +55,7 @@ def recommend_grids(df, df_2, user_inputs):
     available_percentages = [row.index[row].tolist() for _, row in user_rows.iterrows()]
     all_combinations = list(itertools.product(*available_percentages))
 
-    valid_combinations = [combo for combo in all_combinations if sum(int(percent.split('%')[0]) for percent in combo) == 100]
+    valid_combinations = [combo for combo in all_combinations if sum(int(percent.split('%')[0]) for percent in combo) in  (100,99)]
 
     # Filter out symmetric combinations
     def is_symmetric(combination):
